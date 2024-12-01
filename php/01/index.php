@@ -3,7 +3,7 @@ $filename = "input";
 $inputs = [];
 $left = [];
 $right = [];
-if ($file = fopen($filename, "r")) {
+if ($file = fopen($filename, 'rb')) {
     while (!feof($file)) {
         $line = fgets($file);
         if (!empty($line)) {
@@ -17,12 +17,14 @@ if ($file = fopen($filename, "r")) {
 
 sort($left);
 sort($right);
+
 $inputs = array_combine($left, $right);
-$total_dist = 0;
+$total_dist_occurence = 0;
 foreach ($inputs as $ori => $dest)
 {
-//    var_dump($ori, $dest);
-    $total_dist += abs($ori - $dest);
+    $total_dist_occurence += $ori*count(array_filter($right, function ($dest) use ($ori) {
+        return $dest === $ori;
+    }));
 }
 
-var_dump($total_dist);
+echo $total_dist_occurence;
